@@ -12,3 +12,4 @@
 !init.sh
 !flake.nix
 !flake.lock
+/fceux-am
