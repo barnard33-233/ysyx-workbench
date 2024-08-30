@@ -29,6 +29,16 @@
 
     devShells.nemu = pkgs.mkShell {
     # TODO: libreadline, libsdl2
+      packages = with pkgs;[
+        # tools
+        bison
+        flex
+
+        # lib
+        SDL2
+        readline
+        libllvm
+      ];
     };
   });
 }
