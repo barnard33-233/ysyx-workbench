@@ -12,4 +12,5 @@
 !init.sh
 !flake.nix
 !flake.lock
+!**/.envrc
 /fceux-am
