@@ -32,7 +32,8 @@
         # tools
         bison
         flex
-
+      ];
+      buildInputs = with pkgs; [
         # lib
         SDL2
         readline
@@ -44,6 +45,16 @@
       packages = with pkgs; [
         verilator
         gtkwave
+      ];
+    };
+
+    devShells.nvboard = pkgs.mkShell {
+      packages = with pkgs; [
+        python3
+      ];
+      buildInputs = with pkgs; [
+        SDL2
+        SDL_image
       ];
     };
 
