@@ -1,27 +1,39 @@
+TOPNAME = example
 VERILATOR = verilator
-VFLAGS = -Wall --cc --exe --build --trace
-CPPSRC = $(wildcard csrc/*.cpp)
-VSRC = vsrc/example.v
-VCDSRC = wave.vcd
-EXE = ./obj_dir/V$(basename $(notdir $(VSRC)))
+
+# project source
+VSRC = $(shell find $(abspath ./vsrc) -name "*.v")
+CPPSRC = $(shell find $(abspath ./csrc) -name "*.c" -or -name "*.cc" -or -name "*.cpp")
+
+BUILD_DIR = ./build
+OBJDIR = ./build/obj_dir
+VCD = wave.vcd
+
+BIN = $(BUILD_DIR)/$(TOPNAME)
+
+$(shell mkdir -p $(BUILD_DIR))
+
+VFLAGS += -Wall --cc --exe --build --trace
 
 all: sim
 
-sim: verilate $(VCDSRC)
+sim: $(VCD)
 	$(call git_commit, "sim RTL") # DO NOT REMOVE THIS LINE!!!
-	gtkwave $(VCDSRC)
-	
+	gtkwave $(VCD)
 
-verilate: $(VSRC) $(CPPSRC)
-	$(VERILATOR) $(VFLAGS) $(CPPSRC) $(VSRC)
+verilate: $(BIN)
 
-$(VCDSRC):
-	$(EXE)
+$(VCD): $(BIN)
+	$(BIN)
+
+$(BIN): $(VSRC) $(CPPSRC)
+	$(VERILATOR) $(VFLAGS) \
+		$(CPPSRC) $(VSRC) \
+		-Mdir $(OBJDIR) -o $(abspath $(BIN))
 
 clean:
-	rm -r ./obj_dir/
-	rm $(VCDSRC)
+	rm -r $(BUILD_DIR)
 
-.PHONY: clean
+.PHONY: clean verilate sim all
 
 include ../Makefile
