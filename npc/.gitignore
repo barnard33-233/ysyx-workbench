@@ -9,6 +9,7 @@
 !*.cpp
 !.gitignore
 !README.md
+!constr/*
 build/
 obj_dir/
 compile_commands.json

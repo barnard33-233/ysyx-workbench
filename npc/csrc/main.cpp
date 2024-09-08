@@ -3,34 +3,35 @@
 #include <stdlib.h>
 #include <random>
 #include <assert.h>
-#include "Vexample.h"
+#include "Vtop.h"
 #include "verilated.h"
 #include "verilated_vcd_c.h"
+#include <nvboard.h>
 
-#define STEPS 10
+#define STEPS 10000
+
+void nvboard_bind_all_pins(Vtop* top);
 
 int main(int argc, char** argv) {
     VerilatedContext* contextp = new VerilatedContext;
     contextp -> commandArgs(argc, argv);
-    Vexample* top = new Vexample{contextp};
+    Vtop* top = new Vtop{contextp};
 
     VerilatedVcdC* tfp = new VerilatedVcdC;
     contextp->traceEverOn(true);
     top->trace(tfp, 0);
     tfp->open("wave.vcd");
+    nvboard_bind_all_pins(top);
+    nvboard_init();
 
-    for (int i = 0; i < STEPS && !contextp->gotFinish(); i++){
-        printf("step %d: ", i);
-        int a = rand() & 1;
-        int b = rand() & 1;
-        top->a = a;
-        top->b = b;
+    for (int i = 0; !contextp->gotFinish(); i++){
         top->eval();
-        printf("a = %d, b = %d, f = %d\n", a, b, top->f);
-        tfp->dump(contextp->time());
+        nvboard_update();
+        // tfp->dump(contextp->time());
+        // so many outputs.
         contextp->timeInc(1);
-        assert(top->f == (a ^ b));
     }
+    nvboard_quit();
     printf("--finish--\n");
     delete top;
     tfp->close();
