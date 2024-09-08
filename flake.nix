@@ -22,8 +22,7 @@
   {
     devShells.default = pkgs.mkShell {
       packages = with pkgs;[
-        gcc
-        gdb
+        # gnumake
       ];
     };
 
@@ -32,8 +31,11 @@
         # tools
         bison
         flex
-
+      ];
+      buildInputs = with pkgs; [
         # lib
+        gcc
+        gdb
         SDL2
         readline
         libllvm
@@ -42,8 +44,32 @@
 
     devShells.npc = pkgs.mkShell {
       packages = with pkgs; [
+        gcc
+        gdb
         verilator
         gtkwave
+        python3
+      ];
+      buildInputs = with pkgs; [
+        # for nvboard
+        SDL2
+        SDL2_image
+        SDL2_ttf
+      ];
+      shellHook = ''
+        export PATH=$NVBOARD_HOME/scripts/:$PATH
+      '';
+    };
+
+    devShells.nvboard = pkgs.mkShell {
+      packages = with pkgs; [
+        python3
+        verilator
+      ];
+      buildInputs = with pkgs; [
+        SDL2
+        SDL2_image
+        SDL2_ttf
       ];
     };
 
