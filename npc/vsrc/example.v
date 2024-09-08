@@ -3,6 +3,5 @@ module example(
     input b,
     output f
 );
-  initial begin $display("Hello!");$finish; end
   assign f = a^b;
 endmodule
