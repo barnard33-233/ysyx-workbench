@@ -7,7 +7,7 @@ CPPSRC = $(shell find $(abspath ./csrc) -name "*.c" -or -name "*.cc" -or -name "
 
 BUILD_DIR = ./build
 OBJDIR = ./build/obj_dir
-VCD = $(BUILD_DIR)/wave.vcd
+VCD = wave.vcd
 
 BIN = $(BUILD_DIR)/$(TOPNAME)
 
