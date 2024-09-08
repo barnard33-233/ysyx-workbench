@@ -1,4 +1,4 @@
-TOPNAME = example
+TOPNAME = top
 VERILATOR = verilator
 
 # project source
@@ -17,20 +17,19 @@ VFLAGS += -Wall --cc --exe --build --trace
 
 all: sim
 
-$(BIN): $(VSRC) $(CPPSRC)
-	$(VERILATOR) $(VFLAGS) \
-		$(CPPSRC) $(VSRC) \
-		-Mdir $(OBJDIR) -o $(abspath $(BIN))
-
 sim: $(VCD)
 	$(call git_commit, "sim RTL") # DO NOT REMOVE THIS LINE!!!
 	gtkwave $(VCD)
 
 verilate: $(BIN)
 
-
 $(VCD): $(BIN)
 	$(BIN)
+
+$(BIN): $(VSRC) $(CPPSRC)
+	$(VERILATOR) $(VFLAGS) \
+		$(CPPSRC) $(VSRC) \
+		-Mdir $(OBJDIR) -o $(abspath $(BIN))
 
 clean:
 	rm -r $(BUILD_DIR)

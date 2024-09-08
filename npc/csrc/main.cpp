@@ -3,16 +3,17 @@
 #include <stdlib.h>
 #include <random>
 #include <assert.h>
-#include "Vexample.h"
+#include "Vtop.h"
 #include "verilated.h"
 #include "verilated_vcd_c.h"
+// #include <nvboard.h>
 
 #define STEPS 10
 
 int main(int argc, char** argv) {
     VerilatedContext* contextp = new VerilatedContext;
     contextp -> commandArgs(argc, argv);
-    Vexample* top = new Vexample{contextp};
+    Vtop* top = new Vtop{contextp};
 
     VerilatedVcdC* tfp = new VerilatedVcdC;
     contextp->traceEverOn(true);
